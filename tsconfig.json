@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
+
     "target": "ESNext", //trocando de es5 para esnext para não dar problema com o resolveJsonModule
     "lib": [
       "dom",

@@ -11,7 +11,6 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
   const {data: session} = useSession();
 
   async function handleSubscribe(){
-    console.log('passou 1')
 
     if(!session){
       signIn('github')
@@ -19,16 +18,13 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
       return;
     }
 
-    console.log('passou 2')
 
     try {
       const response = await api.post('/subscribe');
       const { sessionId } = response.data;
       const stripe = await getStripeJs();
 
-      console.log('passou')
-
-      await stripe.redirectToCheckout({sessionId});
+      await stripe.redirectToCheckout({ sessionId: sessionId });
 
     } catch (err){
       alert(err.message);
