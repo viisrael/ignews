@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styles from './styles.module.scss';
 import { createClient } from '../../../prismicio';
 import { RichText } from 'prismic-dom';
+import Link from 'next/link';
 
 type Post = {
   slug: string;
@@ -25,11 +26,13 @@ export default function Posts({ posts }: PostsProps){
       <main className={ styles.container }>
         <div className={ styles.posts }>
           { posts.map(post => ( 
-            <a key={post.slug} href='#'>
-              <time>{post.updatedAt}</time>
-              <strong>{post.title}</strong>
-              <p>{post.excerpt}</p>
-            </a>
+            <Link href={ `/posts/${post.slug}`}>
+              <a key={post.slug} >
+                <time>{post.updatedAt}</time>
+                <strong>{post.title}</strong>
+                <p>{post.excerpt}</p>
+              </a>
+            </Link>
           ))}   
         </div>
       </main>
@@ -41,10 +44,13 @@ export default function Posts({ posts }: PostsProps){
 
 export async function getStaticProps({previewData}) {
   const client = createClient({previewData});
+  
   const response = await client.getAllByType('post',{
       fetch: ['post.title','post.content'], pageSize: 100
   });
+
   console.log(response);
+
   const posts = response.map(post => {
       return {
           slug: post.uid,
